@@ -15,6 +15,7 @@ global.grassArr = [];
 global.xotakerArr = [];
 global.gishatichArr = [];
 global.amenakerArr = [];
+
 //global.t = [1,2,3,4];
 
 app.get('/', function (req, res) {
@@ -24,6 +25,8 @@ server.listen(3000);
 var w = 30;
 var h = 30;
 var side = 24;
+var grass;
+var xotaker;
 
 io.on('connection', function (socket) {
 
@@ -55,7 +58,7 @@ io.on('connection', function (socket) {
     setup();
     socket.emit("script", matrix);
     //console.log("lav");
-
+    //socket.emit("xot", grassArr.lenght);
     
     global.season = "spring";
     setInterval(function () {
@@ -85,6 +88,8 @@ io.on('connection', function (socket) {
         socket.emit("script2", season);
 
     }, 4000);
+        
+
 
     function main() {
 
@@ -99,10 +104,12 @@ io.on('connection', function (socket) {
             for (var x in matrix[y]) { //console.log("Hey i am working normal!");
                 if (matrix[y][x] == 1) {
                     grassArr.push(new Grass(x * 1, y * 1, 1));
+                    //grass++;
                 } else if (matrix[y][x] == 2) {
                     var r2 = (Math.round(Math.random()) / 2) + 2;
                     matrix[x][y] = r2;
                     xotakerArr.push(new Xotaker(x * 1, y * 1, r2));
+                    //xotaker++;
                 } else if (matrix[y][x] == 3) {
                     var r3 = (Math.round(Math.random()) / 2) + 3;
                     matrix[x][y] = r3;
@@ -115,12 +122,12 @@ io.on('connection', function (socket) {
 
             }
         }
-
-
+        
         for (var i in grassArr) {
             //grassArr[i].ms = t;
             grassArr[i].mul(); //console.log(grassArr[i]);
             grassArr[i].season();
+            //console.log(grassArr.lenght)
         }
 
         for (var i in xotakerArr) {
@@ -143,15 +150,28 @@ io.on('connection', function (socket) {
         //console.log("Dont look at me!")
         //console.log(grassArr);
         socket.emit("script1", matrix);
-
+        
+        //console.log(grassArr.length)
+        //console.log(xotakerArr.length)
 
 
     }
 
     //var k = 1;
 
-
-
+    //console.log(grass)
+   // console.log(xotaker)
+    var fs = require('fs');
+    function stat() {
+    var file = "Stat.json";
+    var tvyalner = {
+        'xoteri qanak': grass,
+        'xotakerneri qanak':xotaker
+    }
+    var myJSON = JSON.stringify(tvyalner);
+    fs.writeFileSync(file, myJSON);
+}
+    stat();
     setInterval(main,500);
-
+    
 });

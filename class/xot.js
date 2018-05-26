@@ -28,7 +28,5 @@ module.exports = class Grass extends Livingcreature {
 
         //console.log(this.directions);
     }
-    freeze() {
-        
-    }
+
 }
