@@ -27,7 +27,7 @@ var h = 30;
 var side = 24;
 var grass;
 var xotaker;
-
+var time = 0;
 io.on('connection', function (socket) {
 
 
@@ -151,9 +151,8 @@ io.on('connection', function (socket) {
         //console.log(grassArr);
         socket.emit("script1", matrix);
         
-        //console.log(grassArr.length)
-        //console.log(xotakerArr.length)
-
+        //
+		time+=0.5;
 
     }
 
@@ -164,14 +163,18 @@ io.on('connection', function (socket) {
     var fs = require('fs');
     function stat() {
     var file = "Stat.json";
+	console.log(time)
+	console.log(grassArr.length)
+    console.log(xotakerArr.length)
     var tvyalner = {
-        'xoteri qanak': grass,
-        'xotakerneri qanak':xotaker
+		'time': time,
+        'xoteri qanak': grassArr.length,
+        'xotakerneri qanak':xotakerArr.length
     }
     var myJSON = JSON.stringify(tvyalner);
     fs.writeFileSync(file, myJSON);
 }
-    stat();
+    setInterval(stat,500);
     setInterval(main,500);
     
 });
